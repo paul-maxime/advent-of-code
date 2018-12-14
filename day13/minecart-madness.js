@@ -8,19 +8,19 @@ const lines = content.split('\n').filter(x => x.length > 0);
 const height = lines.length;
 const width = lines[0].length;
 const map = new Array(width * height);
-const initialCarts = [];
+let carts = [];
 
 lines.forEach((line, y) => {
     [...line].forEach((c, x) => {
         switch (c) {
             case '<':
             case '>':
-                initialCarts.push({ x, y, dir: c, step: 0, crashed: false });
+                carts.push({ x, y, dir: c, step: 0, crashed: false });
                 c = '-';
                 break;
             case '^':
             case 'v':
-                initialCarts.push({ x, y, dir: c, step: 0, crashed: false });
+                carts.push({ x, y, dir: c, step: 0, crashed: false });
                 c = '|';
                 break;
         }
@@ -53,9 +53,9 @@ const turnRight = {
     '>': 'v',
 };
 
-let firstCrash = null;
+let firstCrash = true;
 
-function update(carts) {
+function update() {
     carts.filter(x => !x.crashed).sort((a, b) => a.y === b.y ? a.x - b.x : a.y - b.y).forEach(cart => {
         switch (cart.dir) {
             case '>':
@@ -91,28 +91,18 @@ function update(carts) {
         if (collisions.length > 0) {
             collisions.forEach(cartB => { cartB.crashed = true; });
             cart.crashed = true;
-            if (firstCrash === null) {
-                firstCrash =  {x: cart.x, y: cart.y };
-            }
+            console.log('crash', {x: cart.x, y: cart.y });
         }
     });
 }
 
-let carts = initialCarts.slice();
-
-while (firstCrash === null) {
-    update(carts);
-}
-
-console.log(firstCrash);
-
-carts = initialCarts.slice();
-
 while (true) {
-    update(carts);
+    update();
     carts = carts.filter(x => !x.crashed);
+    if (carts.length === 1) {
+        console.log('survivor', carts[0]);
+    }
     if (carts.length <= 1) {
-        console.log(carts);
         break;
     }
 }
