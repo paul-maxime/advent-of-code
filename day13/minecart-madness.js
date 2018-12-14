@@ -53,8 +53,6 @@ const turnRight = {
     '>': 'v',
 };
 
-let firstCrash = true;
-
 function update() {
     carts.filter(x => !x.crashed).sort((a, b) => a.y === b.y ? a.x - b.x : a.y - b.y).forEach(cart => {
         switch (cart.dir) {
