@@ -148,7 +148,6 @@ function computeOpcodeIds() {
 
 function executeProgram() {
     const registers = [0, 0, 0, 0];
-    console.log(registers);
     for (const instruction of program) {
         const [opcode, a, b, c] = instruction;
         mappedOpcodes.get(opcode).fct(registers, a, b, c);

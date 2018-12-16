@@ -124,7 +124,6 @@ function getWinner() {
     return !goblin ? 'E' : !elf ? 'G' : null;
 }
 
-
 function playRound() {
     const sortedEntities = entities.sort((a, b) => a.y === b.y ? a.x - b.x : a.y - b.y);
     let hasEveryonePlayed = true;
