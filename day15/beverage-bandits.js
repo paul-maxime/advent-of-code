@@ -26,19 +26,19 @@ function isCellFree(x, y) {
     return x >= 0 && y >= 0 && x < width && y < height && map[y * width + x] === '.';
 }
 
-function tryToAddCell(open, closed, x, y, parent) {
+function tryToAddCell(open, closed, x, y, ancestorDirectionPriority, parent) {
     if (isCellFree(x, y) && !closed.has(y * width + x)) {
-        open.push({ x, y, parent, distance: parent.distance + 1 });
+        open.push({ x, y, parent, distance: parent.distance + 1, ancestorDirectionPriority: parent.ancestorDirectionPriority ? parent.ancestorDirectionPriority : ancestorDirectionPriority });
         closed.add(y * width + x);
     }
 }
 
 function addNeighbors(open, closed, parent) {
     const { x, y } = parent;
-    tryToAddCell(open, closed, x - 1, y, parent);
-    tryToAddCell(open, closed, x + 1, y, parent);
-    tryToAddCell(open, closed, x, y - 1, parent);
-    tryToAddCell(open, closed, x, y + 1, parent);
+    tryToAddCell(open, closed, x, y - 1, 1, parent);
+    tryToAddCell(open, closed, x - 1, y, 2, parent);
+    tryToAddCell(open, closed, x + 1, y, 3, parent);
+    tryToAddCell(open, closed, x, y + 1, 4, parent);
 }
 
 function isOpponent(x, y, opponentType) {
@@ -52,10 +52,17 @@ function isNextToOpponent(cell, opponentType) {
         isOpponent(cell.x, cell.y + 1, opponentType);
 }
 
-function compareScore(a, b) {
+function compareNodes(a, b) {
     if (a.distance !== b.distance) return b.distance - a.distance;
+    if (a.ancestorDirectionPriority !== b.ancestorDirectionPriority) return b.ancestorDirectionPriority - a.ancestorDirectionPriority;
     if (a.y !== b.y) return b.y - a.y;
     return b.x - a.x;
+}
+
+function compareFinalNodes(a, b) {
+    if (a.distance !== b.distance) return a.distance - b.distance;
+    if (a.y !== b.y) return a.y - b.y;
+    return a.x - b.x;
 }
 
 function findPathToNearestOpponent(entity) {
@@ -65,7 +72,7 @@ function findPathToNearestOpponent(entity) {
     closed.add(entity.y * width + entity.x);
     let found = [];
     while (open.length > 0) {
-        const current = open.sort(compareScore).pop();
+        const current = open.sort(compareNodes).pop();
         if (isNextToOpponent(current, opponentType)) {
             found.push(current);
             open = open.filter(node => node.distance == current.distance);
@@ -74,8 +81,8 @@ function findPathToNearestOpponent(entity) {
             addNeighbors(open, closed, current);
         }
     }
-    found.sort(compareScore);
-    return found.length > 0 ? found[found.length - 1] : null;
+    found.sort(compareFinalNodes);
+    return found.length > 0 ? found[0] : null;
 }
  
 function compareOpponents(a, b) {
@@ -124,7 +131,7 @@ function getWinner() {
     return !goblin ? 'E' : !elf ? 'G' : null;
 }
 
-function playRound() {
+function playRound(turn) {
     const sortedEntities = entities.sort((a, b) => a.y === b.y ? a.x - b.x : a.y - b.y);
     let hasEveryonePlayed = true;
     for (const entity of sortedEntities) {
@@ -141,7 +148,7 @@ function computeVanillaBattle() {
     loadMap(3);
     let turn = 0;
     while (getWinner() === null) {
-        if (playRound()) {
+        if (playRound(turn)) {
             turn++;
         }
     }
