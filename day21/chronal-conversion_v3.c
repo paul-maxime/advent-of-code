@@ -16,18 +16,13 @@ int main(void)
     {
         r1 = r4 | 0x10000;
         r4 = 678134;
-        bool keepGoing = true;
-        while (keepGoing) {
-            keepGoing = false;
+        while (r1 > 0)
+        {
             r4 += r1 & 0xFF;
             r4 &= 0xFFFFFF;
             r4 *= 65899;
             r4 &= 0xFFFFFF;
-            if (r1 >= 0x100)
-            {
-                r1 /= 0x100;
-                keepGoing = true;
-            }
+            r1 /= 0x100;
         }
         printf("%ld\n", r4);
     }
