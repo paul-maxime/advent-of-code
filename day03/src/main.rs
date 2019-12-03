@@ -103,6 +103,14 @@ fn main() {
 
     let points_a = paths[0].get_points();
     let points_b = paths[1].get_points();
+
+    let intersections = compute_intersections(points_a, points_b);
+
+    print_nearest_from_origin(&intersections);
+    print_nearest_from_start(&intersections);
+}
+
+fn compute_intersections(points_a: HashMap<i32, Point>, points_b: HashMap<i32, Point>) -> Vec<(Point, i32)> {
     let mut intersections = Vec::new();
 
     for p in points_a {
@@ -113,8 +121,7 @@ fn main() {
         }
     }
 
-    print_nearest_from_origin(&intersections);
-    print_nearest_from_start(&intersections);
+    intersections
 }
 
 fn print_nearest_from_origin(intersections: &Vec<(Point, i32)>) {
@@ -125,7 +132,6 @@ fn print_nearest_from_origin(intersections: &Vec<(Point, i32)>) {
         Some(p) => println!("({}, {}) -> distance from origin = {}", (p.0).x, (p.0).y, (p.0).distance_from_origin()),
         None => panic!("no intersection point found")
     }
-
 }
 
 fn print_nearest_from_start(intersections: &Vec<(Point, i32)>) {
