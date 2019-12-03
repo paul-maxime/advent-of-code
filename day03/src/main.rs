@@ -113,6 +113,11 @@ fn main() {
         }
     }
 
+    print_nearest_from_origin(&intersections);
+    print_nearest_from_start(&intersections);
+}
+
+fn print_nearest_from_origin(intersections: &Vec<(Point, i32)>) {
     let nearest_point = intersections.iter()
         .min_by_key(|x| (x.0).distance_from_origin());
 
@@ -121,11 +126,14 @@ fn main() {
         None => panic!("no intersection point found")
     }
 
-    let first_point = intersections.iter()
+}
+
+fn print_nearest_from_start(intersections: &Vec<(Point, i32)>) {
+    let nearest_point = intersections.iter()
         .min_by_key(|x| x.1);
 
-    match first_point {
-        Some(p) => println!("({}, {}) -> distance from start = {}", (p.0).x, (p.0).y, (p.0).distance_from_start),
+    match nearest_point {
+        Some(p) => println!("({}, {}) -> distance from start = {}", (p.0).x, (p.0).y, p.1),
         None => panic!("no intersection point found")
     }
 }
