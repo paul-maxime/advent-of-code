@@ -34,12 +34,12 @@ fn find_best_permutation<F: Fn(&Vec<i32>, &mut Vec<i32>) -> i32>(program: &Vec<i
 
 fn execute_amplification_circuit(program: &Vec<i32>, execution_order: &mut Vec<i32>) -> i32 {
     let mut outputs = Vec::new();
-        let mut current_output = 0;
-        for n in execution_order.clone() {
-            execute_program(&program, &mut vec![current_output, n], &mut outputs);
-            current_output = outputs.pop().unwrap();
-        }
-        current_output
+    let mut current_output = 0;
+    for n in execution_order.clone() {
+        execute_program(&program, &mut vec![current_output, n], &mut outputs);
+        current_output = outputs.pop().unwrap();
+    }
+    current_output
 }
 
 fn execute_feedback_loop(program: &Vec<i32>, execution_order: &mut Vec<i32>) -> i32 {
