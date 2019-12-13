@@ -185,7 +185,6 @@ fn play_the_game(opcodes: &Vec<i64>) {
 
     let mut paddle_x = 0;
     let mut ball_x = 0;
-    let mut current_score = 0;
     while program.run_until_input() {
         if let Some(new_paddle_pos) = get_element_position(&program.outputs, 3) {
             paddle_x = new_paddle_pos.0;
@@ -193,17 +192,13 @@ fn play_the_game(opcodes: &Vec<i64>) {
         if let Some(new_ball_pos) = get_element_position(&program.outputs, 4) {
             ball_x = new_ball_pos.0;
         }
-        if let Some(new_score) = get_score(&program.outputs) {
-            current_score = new_score;
-        }
         program.outputs.clear();
         program.inputs.push_back(if paddle_x == ball_x { 0 } else if paddle_x < ball_x { 1 } else { -1 });
     }
-    if let Some(new_score) = get_score(&program.outputs) {
-        current_score = new_score;
-    }
 
-    println!("Final score: {}", current_score);
+    if let Some(score) = get_score(&program.outputs) {
+        println!("Final score: {}", score);
+    }
 }
 
 fn get_element_position(program_outputs: &VecDeque<i64>, element_type: i64) -> Option<(i64, i64)> {
