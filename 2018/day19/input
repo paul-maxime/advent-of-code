@@ -1,0 +1,37 @@
+#ip 4
+addi 4 16 4 // ok j0
+seti 1 7 2 // ok j1
+seti 1 1 5 // ok j2
+mulr 2 5 3 // ok j3
+eqrr 3 1 3 // ok j4
+addr 3 4 4 // ok j5, jump
+addi 4 1 4 // ok j6, jump
+addr 2 0 0 // ok j7
+addi 5 1 5 // ok j8
+gtrr 5 1 3 // ok j9
+addr 4 3 4 // ok j10, jump
+seti 2 7 4 // ok j11, jump
+addi 2 1 2 // ok j12
+gtrr 2 1 3 // ok j13
+addr 3 4 4 // ok j14, jump
+seti 1 3 4 // ok j15, jump
+mulr 4 4 4 // ok j16, jump
+addi 1 2 1 // ok j17
+mulr 1 1 1 // ok j18
+mulr 4 1 1 // ok j19
+muli 1 11 1 // ok j20
+addi 3 3 3 // ok j21
+mulr 3 4 3 // ok j22
+addi 3 9 3 // ok j23
+addr 1 3 1 // ok j24
+addr 4 0 4 // ok j25
+seti 0 1 4 // ok j26
+setr 4 9 3 // ok j27
+mulr 3 4 3 // ok j28
+addr 4 3 3 // ok j29
+mulr 4 3 3 // ok j30
+muli 3 14 3 // ok j31
+mulr 3 4 3 // ok j32
+addr 1 3 1 // ok j33
+seti 0 6 0 // ok j34
+seti 0 7 4 // ok j35, jump
