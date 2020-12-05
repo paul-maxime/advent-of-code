@@ -6,7 +6,7 @@ fn main() {
     seat_ids.sort();
 
     println!("Highest seat ID: {}", seat_ids.last().unwrap());
-    println!("Missing sear ID: {}", seat_ids.iter().fold(0, |a, b| if a == 0 || a == b - 1 { *b } else { a }) + 1);
+    println!("Missing seat ID: {}", seat_ids.iter().fold(0, |a, b| if a == 0 || a == b - 1 { *b } else { a }) + 1);
 }
 
 fn compute_seat_id(seat: &str) -> i32 {
