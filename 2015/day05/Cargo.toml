@@ -2,3 +2,7 @@
 name = "day05"
 version = "0.1.0"
 edition = "2018"
+
+[[bin]]
+name = "doesnt-he-have-intern-elves-for-this"
+path = "doesnt-he-have-intern-elves-for-this.rs"
