@@ -1,2 +1,5 @@
 # Rust target
 target/
+
+# Rust lock file
+Cargo.lock
