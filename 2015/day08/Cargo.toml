@@ -1,0 +1,11 @@
+[package]
+name = "day07"
+version = "0.1.0"
+edition = "2018"
+
+[[bin]]
+name = "matchsticks"
+path = "matchsticks.rs"
+
+[dependencies]
+unescape = "0.1.0"
