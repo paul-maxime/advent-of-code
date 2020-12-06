@@ -1,0 +1,8 @@
+[package]
+name = "day02"
+version = "0.1.0"
+edition = "2018"
+
+[[bin]]
+name = "i-was-told-there-would-be-no-math"
+path = "i-was-told-there-would-be-no-math.rs"
