@@ -1,0 +1,11 @@
+[package]
+name = "day04"
+version = "0.1.0"
+edition = "2018"
+
+[[bin]]
+name = "the-ideal-stocking-stuffer"
+path = "the-ideal-stocking-stuffer.rs"
+
+[dependencies]
+md5 = "0.7.0"
