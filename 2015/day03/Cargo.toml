@@ -1,0 +1,8 @@
+[package]
+name = "day03"
+version = "0.1.0"
+edition = "2018"
+
+[[bin]]
+name = "perfectly-spherical-houses-in-a-vacuum"
+path = "perfectly-spherical-houses-in-a-vacuum.rs"
