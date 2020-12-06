@@ -1,0 +1,11 @@
+[package]
+name = "day06"
+version = "0.1.0"
+edition = "2018"
+
+[[bin]]
+name = "probably-a-fire-hazard"
+path = "probably-a-fire-hazard.rs"
+
+[dependencies]
+regex = "1"
