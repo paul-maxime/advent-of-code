@@ -1,0 +1,11 @@
+[package]
+name = "day09"
+version = "0.1.0"
+edition = "2018"
+
+[[bin]]
+name = "all-in-a-single-night"
+path = "all-in-a-single-night.rs"
+
+[dependencies]
+regex = "1"
