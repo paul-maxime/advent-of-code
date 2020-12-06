@@ -1,0 +1,11 @@
+[package]
+name = "day07"
+version = "0.1.0"
+edition = "2018"
+
+[[bin]]
+name = "some-assembly-required"
+path = "some-assembly-required.rs"
+
+[dependencies]
+regex = "1"
