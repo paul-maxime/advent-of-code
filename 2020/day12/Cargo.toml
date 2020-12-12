@@ -1,0 +1,8 @@
+[package]
+name = "day12"
+version = "0.1.0"
+edition = "2018"
+
+[[bin]]
+name = "rain-risk"
+path = "rain-risk.rs"
