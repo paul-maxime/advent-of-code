@@ -48,7 +48,7 @@ fn execute_program_v2(instructions: &Vec<(&str, &str)>) {
             let address: u64 = instruction.0.parse::<u64>().unwrap() | mask.0;
             let value: u64 = instruction.1.parse().unwrap();
 
-            insert_recursive(&mut memory, address, value, mask.1, 0, 0, 0);
+            insert_recursive(&mut memory, address, value, mask.1, 0);
         }
     }
 
@@ -61,16 +61,15 @@ fn parse_mask_v2(mask: &str) -> (u64, u64) {
     (or_mask, float_mask)
 }
 
-fn insert_recursive(memory: &mut HashMap<u64, u64>, address: u64, value: u64, mask: u64, index: u64, current_or: u64, current_and: u64) {
+fn insert_recursive(memory: &mut HashMap<u64, u64>, address: u64, value: u64, mask: u64, index: u64) {
     if index < 36 {
         if (mask & (1 << index)) > 0 {
-            insert_recursive(memory, address, value, mask, index + 1, current_or | (1 << index), current_and);
-            insert_recursive(memory, address, value, mask, index + 1, current_or, current_and | (1 << index));
+            insert_recursive(memory, address | (1 << index), value, mask, index + 1);
+            insert_recursive(memory, address & !(1 << index), value, mask, index + 1);
         } else {
-            insert_recursive(memory, address, value, mask, index + 1, current_or, current_and);
+            insert_recursive(memory, address, value, mask, index + 1);
         }
     } else {
-        let masked_address = (address | current_or) & !current_and;
-        memory.insert(masked_address, value);
+        memory.insert(address, value);
     }
 }
