@@ -23,7 +23,7 @@ fn compute_time_to_wait(earliest_time: i64, shuttles: &Vec<i64>) {
 }
 
 fn compute_weird_challenge(shuttles: &Vec<i64>) {
-    let best_group_of_shuttles: (i64, i64) = shuttles.iter().enumerate().map(|(index, &time)| {
+    let best_group_of_shuttles = shuttles.iter().enumerate().map(|(index, &time)| {
         let product = shuttles.iter().enumerate()
             .filter(|(index2, &time2)| (index as i64 - *index2 as i64).abs() == time2)
             .fold(time, |acc, cur| acc * cur.1);
