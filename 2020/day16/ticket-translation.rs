@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::collections::HashSet;
 
 #[derive(Debug)]
 struct Field {
@@ -54,27 +53,24 @@ fn is_in_field_range(field: &Field, value: i32) -> bool {
 // Part 2
 
 fn compute_departure_product(fields: &Vec<Field>, tickets: &Vec<Vec<i32>>) -> i64 {
-    let mapped_fields = map_index_to_fields(&fields, &tickets);
-    mapped_fields.iter().filter(|x| x.1.starts_with("departure")).map(|x| tickets[0][*x.0]).fold(1, |cur, arr| cur as i64 * arr as i64)
+    let mapped_fields = map_index_to_fields(fields, tickets);
+    mapped_fields.iter().filter(|x| x.1.starts_with("departure")).map(|x| tickets[0][*x.0]).fold(1, |cur, arr| cur * arr as i64)
 }
 
-fn map_index_to_fields(fields: &Vec<Field>, tickets: &Vec<Vec<i32>>) -> HashMap<usize, String> {
-    let mut mapped_fields: HashMap<usize, String> = HashMap::new();
-    let mut fields_found: HashSet<String> = HashSet::new();
-
+fn map_index_to_fields<'a>(fields: &'a Vec<Field>, tickets: &Vec<Vec<i32>>) -> HashMap<usize, &'a str> {
     let valid_tickets: Vec<&Vec<i32>> = tickets.iter().filter(|&x| is_valid_ticket(fields, x)).collect();
+    let mut mapped_fields: HashMap<usize, &str> = HashMap::new();
 
-    while fields_found.len() != fields.len() {
+    while mapped_fields.len() != fields.len() {
         for i in 0..valid_tickets[0].len() {
             let field_values: Vec<i32> = valid_tickets.iter().map(|x| x[i]).collect();
             let matching_fields: Vec<&Field> = fields.iter().filter(|field|
-                !fields_found.contains(&field.name) &&
+                !mapped_fields.values().any(|&x| x == field.name) &&
                 field_values.iter().all(|&x| is_in_field_range(field, x))
             ).collect();
 
             if matching_fields.len() == 1 {
-                mapped_fields.insert(i, matching_fields[0].name.clone());
-                fields_found.insert(matching_fields[0].name.clone());
+                mapped_fields.insert(i, &matching_fields[0].name);
             }
         }
     }
