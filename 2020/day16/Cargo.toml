@@ -1,0 +1,11 @@
+[package]
+name = "day16"
+version = "0.1.0"
+edition = "2018"
+
+[[bin]]
+name = "ticket-translation"
+path = "ticket-translation.rs"
+
+[dependencies]
+regex = "1"
