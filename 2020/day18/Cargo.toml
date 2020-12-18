@@ -1,0 +1,8 @@
+[package]
+name = "day17"
+version = "0.1.0"
+edition = "2018"
+
+[[bin]]
+name = "operation-order"
+path = "operation-order.rs"
