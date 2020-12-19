@@ -1,0 +1,11 @@
+[package]
+name = "day17"
+version = "0.1.0"
+edition = "2018"
+
+[[bin]]
+name = "monster-messages"
+path = "monster-messages.rs"
+
+[dependencies]
+rand = "0.8.0"
