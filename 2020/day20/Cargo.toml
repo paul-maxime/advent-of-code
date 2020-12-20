@@ -1,0 +1,8 @@
+[package]
+name = "day20"
+version = "0.1.0"
+edition = "2018"
+
+[[bin]]
+name = "jurassic-jigsaw"
+path = "jurassic-jigsaw.rs"
