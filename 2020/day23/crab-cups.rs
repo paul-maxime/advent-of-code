@@ -51,7 +51,7 @@ fn play_game(mut cups: VecDeque<u32>, full_rules: bool) {
         println!();
     } else {
         let cup_1 = cups[(current + 1) % cups.len()];
-        let cup_2 = cups[(current + 1) % cups.len()];
+        let cup_2 = cups[(current + 2) % cups.len()];
         println!("{} x {} = {}", cup_1, cup_2, cup_1 as u64 * cup_2 as u64);
     }
 }
