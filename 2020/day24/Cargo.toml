@@ -1,0 +1,8 @@
+[package]
+name = "day24"
+version = "0.1.0"
+edition = "2018"
+
+[[bin]]
+name = "lobby-layout"
+path = "lobby-layout.rs"
