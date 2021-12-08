@@ -18,7 +18,8 @@ int CountEasyDigits(string[][] input) => input
     .Where(x => x.Length == 2 || x.Length == 3 || x.Length == 4 || x.Length == 7)
     .Count();
 
-static IEnumerable<IEnumerable<T>> GetPermutations<T>(IEnumerable<T> list, int length) =>
+// Thanks https://stackoverflow.com/a/10630026
+IEnumerable<IEnumerable<T>> GetPermutations<T>(IEnumerable<T> list, int length) =>
     length == 1 ?
         list.Select(t => new T[] { t }) :
         GetPermutations(list, length - 1)
