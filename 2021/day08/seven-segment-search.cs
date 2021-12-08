@@ -1,11 +1,3 @@
-string[][] input = File.ReadAllLines("input")
-    .Select(line => line
-        .Replace(" | ", " ")
-        .Split(" ")
-        .Select(word => new string(word.ToCharArray().OrderBy(x => x).ToArray()))
-        .ToArray()
-    ).ToArray();
-
 const string WIRES = "abcdefg";
 
 Dictionary<string, int> DIGITS = new Dictionary<string, int> {
@@ -45,6 +37,13 @@ int SumAllOutputs(string[][] input) => GetPermutations(WIRES, WIRES.Length)
     .Select(result => int.Parse(string.Join("",
         result.line.TakeLast(4).Select(x => PermutateString(x, result.permutation)).Select(x => DIGITS[x].ToString())
     ))).Sum();
+
+string[][] input = File.ReadAllLines("input")
+    .Select(line => line
+        .Replace(" | ", " ")
+        .Split(" ")
+        .ToArray()
+    ).ToArray();
 
 Console.WriteLine(CountEasyDigits(input));
 Console.WriteLine(SumAllOutputs(input));
