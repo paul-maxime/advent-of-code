@@ -16,27 +16,25 @@ int GetRiskAt(int[][] map, int x, int y)
 
 int FindPathUsingDijkstra(int[][] map, int scale)
 {
-    Dictionary<(int x, int y), Node> open = new();
+    Dictionary<(int x, int y), int> open = new() { { (0, 0), 0 } };
     HashSet<(int x, int y)> closed = new();
 
     int mapHeight = map.Length * scale;
     int mapWidth = map[0].Length * scale;
 
-    open.Add((0, 0), new Node { X = 0, Y = 0, Distance = 0 });
-
     while (open.Count > 0)
     {
-        Node current = open.Values.MinBy(x => x.Distance)!;
-        open.Remove((current.X, current.Y));
-        closed.Add((current.X, current.Y));
+        var current = open.MinBy(x => x.Value)!;
+        open.Remove((current.Key.x, current.Key.y));
+        closed.Add((current.Key.x, current.Key.y));
 
-        if (current.X == mapWidth - 1 && current.Y == mapHeight - 1)
+        if (current.Key.x == mapWidth - 1 && current.Key.y == mapHeight - 1)
         {
-            return current.Distance;
+            return current.Value;
         }
 
         IEnumerable<(int x, int y)> neighbors = directions
-            .Select(p => (p.x + current.X, p.y + current.Y));
+            .Select(p => (p.x + current.Key.x, p.y + current.Key.y));
 
         IEnumerable<(int x, int y)> openNeighbors = neighbors
             .Where(p => p.x >= 0 && p.y >= 0 && p.x < mapWidth && p.y < mapHeight)
@@ -44,21 +42,10 @@ int FindPathUsingDijkstra(int[][] map, int scale)
 
         foreach ((int x, int y) neighbor in openNeighbors)
         {
-            int distance = current.Distance + GetRiskAt(map, neighbor.x, neighbor.y);
-
-            if (open.ContainsKey((neighbor.x, neighbor.y)))
-            {
-                Node next = open[(neighbor.x, neighbor.y)];
-                if (distance < next.Distance)
-                {
-                    next.Distance = distance;
-                }
-            }
-            else
-            {
-                Node next = new Node { X = neighbor.x, Y = neighbor.y, Distance = distance };
-                open.Add((neighbor.x, neighbor.y), next);
-            }
+            open[(neighbor.x, neighbor.y)] = Math.Min(
+                current.Value + GetRiskAt(map, neighbor.x, neighbor.y),
+                open.GetValueOrDefault((neighbor.x, neighbor.y), int.MaxValue)
+            );
         }
     }
 
@@ -67,10 +54,3 @@ int FindPathUsingDijkstra(int[][] map, int scale)
 
 Console.WriteLine(FindPathUsingDijkstra(map, 1));
 Console.WriteLine(FindPathUsingDijkstra(map, 5));
-
-class Node
-{
-    public int X;
-    public int Y;
-    public int Distance;
-}
