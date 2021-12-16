@@ -1,6 +1,5 @@
 ﻿int[][] map = File.ReadAllLines("input")
-    .Select(x => x.ToCharArray()
-    .Select(c => c - '0').ToArray())
+    .Select(x => x.ToCharArray().Select(c => c - '0').ToArray())
     .ToArray();
 
 List<(int x, int y)> directions = new List<(int x, int y)>
@@ -10,31 +9,30 @@ List<(int x, int y)> directions = new List<(int x, int y)>
 
 int GetRiskAt(int[][] map, int x, int y)
 {
-    int risk = map[y % map.Length][x % map[0].Length] + x / map.Length + y / map.Length;
-    return risk > 9 ? risk - 9 : risk;
+    return (map[y % map.Length][x % map[0].Length] + x / map.Length + y / map.Length - 1) % 9 + 1;
 }
 
 int FindPathUsingDijkstra(int[][] map, int scale)
 {
-    Dictionary<(int x, int y), int> open = new() { { (0, 0), 0 } };
+    PriorityQueue<(int x, int y, int cost), int> open = new();
     HashSet<(int x, int y)> closed = new();
 
     int mapHeight = map.Length * scale;
     int mapWidth = map[0].Length * scale;
 
+    open.Enqueue((0, 0, 0), 0);
     while (open.Count > 0)
     {
-        var current = open.MinBy(x => x.Value)!;
-        open.Remove((current.Key.x, current.Key.y));
-        closed.Add((current.Key.x, current.Key.y));
+        var current = open.Dequeue();
+        if (!closed.Add((current.x, current.y))) continue;
 
-        if (current.Key.x == mapWidth - 1 && current.Key.y == mapHeight - 1)
+        if (current.x == mapWidth - 1 && current.y == mapHeight - 1)
         {
-            return current.Value;
+            return current.cost;
         }
 
         IEnumerable<(int x, int y)> neighbors = directions
-            .Select(p => (p.x + current.Key.x, p.y + current.Key.y));
+            .Select(p => (p.x + current.x, p.y + current.y));
 
         IEnumerable<(int x, int y)> openNeighbors = neighbors
             .Where(p => p.x >= 0 && p.y >= 0 && p.x < mapWidth && p.y < mapHeight)
@@ -42,10 +40,8 @@ int FindPathUsingDijkstra(int[][] map, int scale)
 
         foreach ((int x, int y) neighbor in openNeighbors)
         {
-            open[(neighbor.x, neighbor.y)] = Math.Min(
-                current.Value + GetRiskAt(map, neighbor.x, neighbor.y),
-                open.GetValueOrDefault((neighbor.x, neighbor.y), int.MaxValue)
-            );
+            int cost = current.cost + GetRiskAt(map, neighbor.x, neighbor.y);
+            open.Enqueue((neighbor.x, neighbor.y, cost), cost);
         }
     }
 
