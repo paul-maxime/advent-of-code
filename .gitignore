@@ -7,3 +7,7 @@ Cargo.lock
 # dotnet output files
 bin/
 obj/
+
+# vscode configuration
+.vscode/
+
