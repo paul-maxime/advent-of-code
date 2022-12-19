@@ -17,14 +17,27 @@ HashSet<(int x, int y, int z)> cubes = File.ReadAllLines("input")
 
 bool IsTrapped((int x, int y, int z) air)
 {
-    return SIDES.All(side => IsTrappedFromSide(air, side));
-}
+    var queue = new Queue<(int x, int y, int z)>();
+    var visited = new HashSet<(int x, int y, int z)> { air };
+    queue.Enqueue(air);
 
-bool IsTrappedFromSide((int x, int y, int z) air, (int x, int y, int z) delta)
-{
-    if (air.x < MIN || air.x > MAX || air.y < MIN || air.y > MAX || air.z < MIN || air.z > MAX) return false;
-    if (cubes.Contains(air)) return true;
-    return IsTrappedFromSide((air.x + delta.x, air.y + delta.y, air.z + delta.z), delta);
+    while (queue.Count > 0)
+    {
+        var current = queue.Dequeue();
+
+        if (current.x < MIN || current.x > MAX || current.y < MIN || current.y > MAX || current.z < MIN || current.z > MAX) return false;
+
+        foreach (var side in SIDES)
+        {
+            var maybe = (current.x + side.x, current.y + side.y, current.z + side.z);
+            if (cubes.Contains(maybe)) continue;
+            if (visited.Contains(maybe)) continue;
+            visited.Add(maybe);
+            queue.Enqueue(maybe);
+        }
+    }
+
+    return true;
 }
 
 int AffectedSides((int x, int y, int z) air)
@@ -44,6 +57,11 @@ HashSet<(int x, int y, int z)> neighbors = cubes
     .ToHashSet();
 
 int ignoredSides = neighbors.Where(air => IsTrapped(air)).Select(air => AffectedSides(air)).Sum();
+
+foreach (var neighbor in neighbors)
+{
+    Console.WriteLine(neighbor + " " + IsTrapped(neighbor));
+}
 
 Console.WriteLine(allSidesCount);
 Console.WriteLine(allSidesCount - ignoredSides);
