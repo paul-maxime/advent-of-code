@@ -1,5 +1,3 @@
-using System.Data;
-
 var input = File.ReadAllText("input")
     .Split("\n\n")
     .Select(part => part.Trim().Split("\n"))
