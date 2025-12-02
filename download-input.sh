@@ -32,6 +32,6 @@ echo "Downloading $shortcut_file..."
 mkdir -vp "$work_dir"
 mkdir -vp "$input_dir"
 
-curl --cookie session="$ADVENT_OF_CODE_SESSION" https://adventofcode.com/$year/day/$day/input -o "$input_file"
+curl --fail --cookie session="$ADVENT_OF_CODE_SESSION" https://adventofcode.com/$year/day/$day/input -o "$input_file"
 ln -vs "../../$input_file" "$shortcut_file"
 (cd inputs && git add "$shortcut_file" && git commit -m "Add $work_dir")
